@@ -88,6 +88,9 @@ int Cards_draw_check (char *draw_input)
    {
       return FALSE;
    }
+   return draw_amount;
+}
+/*
    if (draw_amount < DRAW_MIN || draw_amount > DRAW_MAX)
    {
       printf("Invalid number of cards. Requires a number from %d to %d.\n",
@@ -96,6 +99,7 @@ int Cards_draw_check (char *draw_input)
    }
    return draw_amount;
 }
+*/
 /*=========================================================================
 char *player_input 
        function checks if this value is in range

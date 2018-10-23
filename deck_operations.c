@@ -33,24 +33,31 @@ Values of the deck are stored as followed:
 Returns the pointer for the deck array.
 ==================================================================*/
 
-int *Create_deck()
+DECK Create_deck()
 {
    int current_suit = DIAMOND;
    int current_array = START_INDEX;
-   static int deck[MAX_DECK_SIZE] = {EMPTY_VALUE};
+   DECK new_deck;
    for ( current_suit; current_suit <= SPADE;
          current_suit = current_suit + SUIT_IDENTIFIER)
    {
       int current_card = TWO;
       for(current_card; current_card <= ACE; current_card++)
       {
-         deck[current_array] = current_suit + current_card;
+         new_deck.deck[current_array].suit = current_suit;
+	 new_deck.deck[current_array].suit_str =
+         CARD_SUIT_ARRAY[current_suit / SUIT_IDENTIFIER];
+
+         new_deck.deck[current_array].value = current_card;
+         new_deck.deck[current_array].value_str =
+         CARD_VAL_ARRAY[current_card];
+
+         printf(" %d %s %d %s \n",new_deck.deck[current_array].suit,new_deck.deck[current_array].suit_str,new_deck.deck[current_array].value,new_deck.deck[current_array].value_str);
          current_array++;
       }
    }
-  
-  
-   return deck;
+
+   return new_deck;
 }
 
 /* ===========================================================================
@@ -80,10 +87,9 @@ Shuffle loop:
 
 
 =============================================================================*/
-void Shuffle_deck ( int *deck)
+DECK Shuffle_deck ( DECK playing_deck)
 {
-   srand(time(NULL));
-   int value_holder = EMPTY_VALUE;
+   CARD value_holder = {EMPTY_VALUE,EMPTY_VALUE,NULL,NULL};
    int current_shuffle_location = START_INDEX;
    int random_value = EMPTY_VALUE;
    for ( current_shuffle_location;
@@ -91,10 +97,12 @@ void Shuffle_deck ( int *deck)
          current_shuffle_location++)
    {
       random_value = rand() % MAX_DECK_SIZE;
-      value_holder = *(deck + current_shuffle_location);
-      *(deck + current_shuffle_location) = *(deck + random_value);
-      *(deck + random_value) = value_holder;
+      value_holder = playing_deck.deck[current_shuffle_location];
+      playing_deck.deck[current_shuffle_location] =
+      playing_deck.deck[random_value];
+      playing_deck.deck[random_value] = value_holder;
    }
+   return playing_deck;
 }
 
 

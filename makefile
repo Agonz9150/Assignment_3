@@ -12,6 +12,6 @@ Head = deck_hands.h
 
 # builds executable file as standard make
 # executable requires 2 user inputs, both int from 1 to 13  
-build: $(All_files) $(Head)
+build: $(FILES) $(Head) 
 	$(CC) $(All_files)
 

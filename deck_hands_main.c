@@ -49,22 +49,38 @@ int main(int argc, char *argv[])
    {
       return FINSHED;
    }
-   const int CURRENT_PLAYERS = Player_check(argv[2]);
-   const int DRAWN_CARDS = Cards_draw_check(argv[1]);
+   const int CURRENT_PLAYERS = Player_check(argv[PLAYER_INPUT]);
+   const int DRAWN_CARDS = Cards_draw_check(argv[CARD_INPUT]);
    if (CURRENT_PLAYERS == FALSE || DRAWN_CARDS == FALSE)
    {
       return FINSHED;
    }
-   const int TOTAL_CARDS = Total_card_check(CURRENT_PLAYERS,DRAWN_CARDS);
+   const int TOTAL_CARDS = Total_card_check(CURRENT_PLAYERS,CARDS_PER_HAND);
    if (TOTAL_CARDS == FALSE)
    {
       return FINSHED;
    }
-
-   int *deck = Create_deck();
-   Print_deck(deck,UNSHUFFLED);
-   Shuffle_deck(deck);
-   Print_deck(deck,SHUFFLED);
-   Deal_hand(deck,CURRENT_PLAYERS,DRAWN_CARDS);
+   srand(time(NULL));
+   const int TOTAL_INDEX = CARDS_PER_HAND * CURRENT_PLAYERS;
+   int player_rank[CURRENT_PLAYERS];
+   int *player_rank_ptr = player_rank;
+   DECK playing_deck = Create_deck();
+   Print_deck(playing_deck,UNSHUFFLED);
+   playing_deck = Shuffle_deck(playing_deck);
+   Print_deck(playing_deck,SHUFFLED);
+   CARD player_hands[TOTAL_INDEX];
+   CARD *player_hands_ptr = player_hands;
+   Deal_hand(playing_deck,player_hands,CARDS_PER_HAND,CURRENT_PLAYERS);
+   Print_hand(player_hands,CURRENT_PLAYERS,CARDS_PER_HAND,FALSE,FALSE,
+              FALSE,FALSE,player_rank_ptr);
+   Sort_hand(player_hands,CARDS_PER_HAND,CURRENT_PLAYERS);
+   Print_hand(player_hands,CURRENT_PLAYERS,CARDS_PER_HAND,TRUE,FALSE,
+              FALSE,FALSE,player_rank_ptr);
+   Rank_hand(player_hands_ptr,CARDS_PER_HAND,CURRENT_PLAYERS,
+             player_rank_ptr);
+   Print_hand(player_hands,CURRENT_PLAYERS,CARDS_PER_HAND,TRUE,TRUE,
+              FALSE,FALSE,player_rank_ptr);
+   Print_hand(player_hands,CURRENT_PLAYERS,CARDS_PER_HAND,TRUE,TRUE,
+              TRUE,FALSE,player_rank_ptr);
    return FINSHED;
 }
